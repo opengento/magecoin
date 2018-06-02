@@ -1,5 +1,133 @@
 {% extends "base.html.twig" %}
 
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript">
+        (function ($, window, document) { //IIFE
+
+            $(function () { //DOM Ready
+
+                $('#frmTransaction').on('submit', function () {
+
+                    var $form = $(this);
+
+                    $.ajax({
+                        url: $form.prop('action'),
+                        method: 'post',
+                        data: $form.serialize(),
+                        showLoader: true,
+                        beforeSend: function(xhr){
+                            $('#spinnerTransaction').show();
+                        }
+                    }).done(function (resp) {
+                        console.log('DONE:', resp);
+                    }).fail(function (resp) {
+                        console.log('FAIL:', resp);
+                    }).always(function(resp){
+                        $('#spinnerTransaction').hide();
+                    });
+
+                    return false;
+                } );
+
+
+                $('#frmMine').on('submit', function () {
+
+                    var $form = $(this);
+
+                    $.ajax({
+                        url: $form.prop('action'),
+                        method: 'post',
+                        data: $form.serialize(),
+                        showLoader: true,
+                        beforeSend: function(xhr){
+                            $('#spinnerMiner').show();
+                        }
+                    }).done(function (resp) {
+                        console.log('DONE:', resp);
+                    }).fail(function (resp) {
+                        console.log('FAIL:', resp);
+                    }).always(function(resp){
+                        $('#spinnerMiner').hide();
+                    });
+
+                    return false;
+                } );
+
+            });
+
+        }(window.jQuery, window, document));
+    </script>
+{% endblock %}
+
+
 {% block body %}
-    {{ dump(chain) }}
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 mb-4"><h1 class="display-2">MageCoin PoC</h1></div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <h2 class="display-4">Create transaction</h2>
+                <form action="{{ path('transaction') }}" id="frmTransaction">
+                    <div class="form-group">
+                        <label for="addressFrom">From:</label>
+                        <select class="form-control" name="addressFrom" id="addressFrom" required>
+                            <option value="">Select</option>
+                            {% for user, address in arUser %}
+                                <option value="{{ address }}">{{ user }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="addressTo">To:</label>
+                        <select class="form-control" name="addressTo" id="addressTo" required>
+                            <option value="">Select</option>
+                            {% for user, address in arUser %}
+                                <option value="{{ address }}">{{ user }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="amount">Amount:</label>
+                        <input  class="form-control" type="text" name="amount" id="amount" required/>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Add</button>
+                    <img src="{{ asset('img/spinner.gif') }}" id="spinnerTransaction" style="display: none; width: 100px;">
+                </form>
+                <form id="frmMine" action="{{ path('mine') }}" class="mt-4">
+                    <h2 class="display-4">Mine</h2>
+                    <div class="form-group">
+                        <label for="minerAddress">Miner:</label>
+                        <select class="form-control" name="minerAddress" id="minerAddress" required>
+                            <option value="">Select</option>
+                            {% for user, address in arUser %}
+                                <option value="{{ address }}">{{ user }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Start mining</button>
+                    <img src="{{ asset('img/spinner.gif') }}" id="spinnerMiner" style="display: none; width: 100px;">
+                </form>
+            </div>
+            <div class="col-md-6">
+                <h2 class="display-4">User list</h2>
+                {% for user, address in arUser %}
+                    <div class="row">
+                        <div class="col-md-3">{{ user }}</div>
+                        <div class="col-md-9">{{ address }}</div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                {{ dump(chain) }}
+            </div>
+        </div>
+    </div>
+
+
+
 {% endblock %}

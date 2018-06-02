@@ -16,7 +16,7 @@ class Chain {
     public function __construct()
     {
         $this->_chain = [$this->createGenesisBlock()];
-        $this->_difficulty = 2;
+        $this->_difficulty = 5;
         $this->_pendingTransactions = [];
         $this->_miningReward = 100;
     }
