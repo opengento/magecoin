@@ -16,19 +16,19 @@
                         method: 'post',
                         data: $form.serialize(),
                         showLoader: true,
-                        beforeSend: function(xhr){
+                        beforeSend: function (xhr) {
                             $('#spinnerTransaction').show();
                         }
                     }).done(function (resp) {
                         console.log('DONE:', resp);
                     }).fail(function (resp) {
                         console.log('FAIL:', resp);
-                    }).always(function(resp){
+                    }).always(function (resp) {
                         $('#spinnerTransaction').hide();
                     });
 
                     return false;
-                } );
+                });
 
 
                 $('#frmMine').on('submit', function () {
@@ -40,19 +40,19 @@
                         method: 'post',
                         data: $form.serialize(),
                         showLoader: true,
-                        beforeSend: function(xhr){
+                        beforeSend: function (xhr) {
                             $('#spinnerMiner').show();
                         }
                     }).done(function (resp) {
                         console.log('DONE:', resp);
                     }).fail(function (resp) {
                         console.log('FAIL:', resp);
-                    }).always(function(resp){
+                    }).always(function (resp) {
                         $('#spinnerMiner').hide();
                     });
 
                     return false;
-                } );
+                });
 
             });
 
@@ -63,7 +63,7 @@
 
 {% block body %}
 
-    <div class="container">
+    <div class="container-fluid">
         <div class="row">
             <div class="col-md-12 mb-4"><h1 class="display-2">MageCoin PoC</h1></div>
         </div>
@@ -91,7 +91,7 @@
                     </div>
                     <div class="form-group">
                         <label for="amount">Amount:</label>
-                        <input  class="form-control" type="text" name="amount" id="amount" required/>
+                        <input class="form-control" type="text" name="amount" id="amount" required/>
                     </div>
                     <button type="submit" class="btn btn-primary">Add</button>
                     <img src="{{ asset('img/spinner.gif') }}" id="spinnerTransaction" style="display: none; width: 100px;">
@@ -112,13 +112,26 @@
                 </form>
             </div>
             <div class="col-md-6">
-                <h2 class="display-4">User list</h2>
-                {% for user, address in arUser %}
-                    <div class="row">
-                        <div class="col-md-3">{{ user }}</div>
-                        <div class="col-md-9">{{ address }}</div>
-                    </div>
-                {% endfor %}
+                <h2 class="display-4">Users list</h2>
+
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th scope="col">Name</th>
+                        <th scope="col">Allowance</th>
+                        <th scope="col">Address</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for user, address in arUser %}
+                        <tr>
+                            <th scope="row">{{ user }}</th>
+                            <td id="allowance-{{ address }}">{{ chain.getAddressBalance(address) }}</td>
+                            <td>{{ address }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
             </div>
         </div>
         <div class="row">
