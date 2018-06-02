@@ -79,4 +79,70 @@ class Chain {
 
         return true;
     }
+
+    /**
+     * @return Block[]
+     */
+    public function getChain()
+    {
+        return $this->_chain;
+    }
+
+    /**
+     * @param Block[] $chain
+     */
+    public function setChain($chain)
+    {
+        $this->_chain = $chain;
+    }
+
+    /**
+     * @return int
+     */
+    public function getDifficulty()
+    {
+        return $this->_difficulty;
+    }
+
+    /**
+     * @param int $difficulty
+     */
+    public function setDifficulty($difficulty)
+    {
+        $this->_difficulty = $difficulty;
+    }
+
+    /**
+     * @return array
+     */
+    public function getPendingTransactions()
+    {
+        return $this->_pendingTransactions;
+    }
+
+    /**
+     * @param array $pendingTransactions
+     */
+    public function setPendingTransactions($pendingTransactions)
+    {
+        $this->_pendingTransactions = $pendingTransactions;
+    }
+
+    /**
+     * @return int
+     */
+    public function getMiningReward()
+    {
+        return $this->_miningReward;
+    }
+
+    /**
+     * @param int $miningReward
+     */
+    public function setMiningReward($miningReward)
+    {
+        $this->_miningReward = $miningReward;
+    }
+
+
 }

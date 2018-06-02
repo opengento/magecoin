@@ -62,6 +62,7 @@ class IndexController extends Controller
 
         $this->_serializer = new Serializer($normalizers, $encoders);
 
+
     }
 
     /**
@@ -70,32 +71,10 @@ class IndexController extends Controller
     public function indexAction(Request $request)
     {
 
-        /*$this->_chain->createTransaction(
-            new Transaction($this->_arUser['florent'], $this->_arUser['franck'], 100)
-        );
-
-
-        $this->_chain->createTransaction(
-            new Transaction($this->_arUser['franck'], $this->_arUser['florent'], 50)
-        );
-
-        $this->logger->debug("Florent starts mining");
-
-        $this->_chain->minePendingTransactions($this->_arUser['florent']);
-
-        $this->logger->debug("Balance florent: ".$this->_chain->getAddressBalance($this->_arUser['florent']));
-        $this->logger->debug("Balance franck: ".$this->_chain->getAddressBalance($this->_arUser['franck']));
-
-        $this->_chain->minePendingTransactions($this->_arUser['florent']);
-
-        $this->logger->debug("Balance florent: ".$this->_chain->getAddressBalance($this->_arUser['florent']));
-        $this->logger->debug("Balance franck: ".$this->_chain->getAddressBalance($this->_arUser['franck']));
-
-        $this->logger->debug("Valid: ".$this->_chain->isChainValid());*/
-
         return $this->render('index.html.twig', [
             'arUser' => $this->_arUser,
-            'chain' => $this->getChain()
+            'chain' => $this->getChain(),
+            'chainJson' => json_decode($this->_serializer->serialize($this->getChain(), 'json'),1)
         ]);
     }
 
@@ -135,7 +114,7 @@ class IndexController extends Controller
 
         return new JsonResponse([
             "success" => true,
-            "chain" => $this->_serializer->serialize($this->getChain()->getLatestBlock(), 'json'),
+            "chain" => $this->_serializer->serialize($this->getChain(), 'json'),
         ]);
     }
 
@@ -152,7 +131,7 @@ class IndexController extends Controller
 
         return new JsonResponse([
             "success" => true,
-            "chain" => $this->_serializer->serialize($this->getChain()->getLatestBlock(), 'json'),
+            "chain" => $this->_serializer->serialize($this->getChain(), 'json'),
         ]);
     }
 

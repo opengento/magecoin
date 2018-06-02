@@ -20,7 +20,11 @@
                             $('#spinnerTransaction').show();
                         }
                     }).done(function (resp) {
-                        console.log('DONE:', resp);
+                        if(resp.success){
+                            var chain = JSON.parse(resp.chain);
+                            $('#txtDetails').text(JSON.stringify(chain,null, 2));
+                        }
+                        console.log('DONE:', resp)
                     }).fail(function (resp) {
                         console.log('FAIL:', resp);
                     }).always(function (resp) {
@@ -44,6 +48,10 @@
                             $('#spinnerMiner').show();
                         }
                     }).done(function (resp) {
+                        if(resp.success){
+                            var chain = JSON.parse(resp.chain);
+                            $('#txtDetails').text(JSON.stringify(chain,null, 2));
+                        }
                         console.log('DONE:', resp);
                     }).fail(function (resp) {
                         console.log('FAIL:', resp);
@@ -136,7 +144,8 @@
         </div>
         <div class="row">
             <div class="col-md-12">
-                {{ dump(chain) }}
+                <h2 class="display-4">Details</h2>
+                <pre id="txtDetails">{{ chainJson|json_encode(constant('JSON_PRETTY_PRINT')) }}</pre>
             </div>
         </div>
     </div>
